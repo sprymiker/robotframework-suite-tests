@@ -179,8 +179,8 @@ Yves: delete from b2c cart products with name:
 Yves: apply discount voucher to cart:
     [Arguments]    ${voucherCode}
     ${expanded}=    Set Variable    ${EMPTY}
-    ${expanded}=    Run Keyword If    '${env}'=='b2c'    Run Keyword And Return Status    Get Element State    ${shopping_cart_voucher_code_field}    ==    hidden
-    Run Keyword If    '${env}'=='b2c' and '${expanded}'=='False'    Click    ${shopping_cart_voucher_code_section_toggler}
+    ${expanded}=    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Run Keyword And Return Status    Get Element State    ${shopping_cart_voucher_code_field}    ==    hidden
+    Run Keyword if    '${env}' in ['b2c','mp_b2c'] and '${expanded}'=='False'    Click    ${shopping_cart_voucher_code_section_toggler}
     Type Text    ${shopping_cart_voucher_code_field}    ${voucherCode}
     Click    ${shopping_cart_voucher_code_redeem_button}
     Yves: flash message should be shown:    success    Your voucher code has been applied
@@ -190,8 +190,8 @@ Yves: apply discount voucher to cart:
 Yves: discount is applied:
 #TODO: make from this method somth real, because Sum is not used
     [Arguments]    ${discountType}    ${discountName}    ${expectedDiscountSum}
-    Run Keyword If    '${env}'=='b2c' and '${discountType}'=='voucher'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-discount-summary')]/*[contains(.,'Vouchers')]
-    ...    ELSE    Run Keyword If    '${env}'=='b2c' and '${discountType}'=='cart rule'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-discount-summary')]/*[contains(.,'Discounts')]
+    Run Keyword if    '${env}' in ['b2c','mp_b2c'] and '${discountType}'=='voucher'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-discount-summary')]/*[contains(.,'Vouchers')]
+    ...    ELSE    Run Keyword if    '${env}' in ['b2c','mp_b2c'] and '${discountType}'=='cart rule'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-discount-summary')]/*[contains(.,'Discounts')]
     Run Keyword If    '${env}'=='b2b' and '${discountType}'=='voucher'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-code-summary')]/*[contains(.,'Vouchers')]
     ...    ELSE    Run Keyword If    '${env}'=='b2b' and '${discountType}'=='cart rule'    Element should be visible    xpath=//span[contains(text(),'${expectedDiscountSum}')]/preceding-sibling::span[contains(text(),'${discountName}')]/ancestor::*[contains(@data-qa,'cart-code-summary')]/*[contains(.,'Discounts')]
 

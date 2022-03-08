@@ -27,7 +27,7 @@ Yves: page contains CMS element:
     ...    ELSE    Run Keyword If    '${type}'=='Homepage Banner Video'    Element Should Be Visible    xpath=//*[contains(@class,'image-banner__video')]
     ...    ELSE    Run Keyword If    '${type}'=='Footer section'    Element Should Be Visible    xpath=//*[@class='footer']
     ...    ELSE    Run Keyword If    '${type}'=='CMS Page Title'    Element Should Be Visible    xpath=//*[contains(@class,'cms-page')][contains(@class,'title')]//*[contains(text(),'${text}')]
-    ...    ELSE    Run Keyword If    '${type}'=='CMS Page Content' and '${env}'=='b2c'    Element Should Be Visible    xpath=//*[contains(@class,'cms-page__content')]//*[contains(text(),'${text}')]
+    ...    ELSE    Run Keyword If    '${type}'=='CMS Page Content' and '${env}' in ['b2c','mp_b2c']    Element Should Be Visible    xpath=//*[contains(@class,'cms-page__content')]//*[contains(text(),'${text}')]
     ...    ELSE    Run Keyword If    '${type}'=='CMS Page Content' and '${env}'=='b2b'    Element Should Be Visible    xpath=//main[contains(@class,'cms-page')]//*[contains(text(),'${text}')]
     ...    ELSE    Run Keyword If    '${type}'=='CMS Block'    Element Should Be Visible    xpath=//div[contains(@class,'catalog-cms-block')]//*[.="${text}"]
 
@@ -48,8 +48,8 @@ Yves: 1st product card in catalog (not)contains:
     ...    ELSE    Run Keyword If    '${elementName}'=='Name' and '${value}'=='false'    Element Should Not Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//*[contains(@class,'item__name') and contains(.,'${value}')]
     ...    ELSE    Run Keyword If    '${env}'=='b2b' and '${elementName}'=='Add to Cart' and '${value}'=='true'    Element Should Not Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//*[@class='product-item__actions']//ajax-add-to-cart//button[@disabled='']
     ...    ELSE    Run Keyword If    '${env}'=='b2b' and '${elementName}'=='Add to Cart' and '${value}'=='false'    Element Should Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//*[@class='product-item__actions']//ajax-add-to-cart//button[@disabled='']
-    ...    ELSE    Run Keyword If    '${env}'=='b2c' and '${elementName}'=='Add to Cart' and '${value}'=='true'    Element Should Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
-    ...    ELSE    Run Keyword If    '${env}'=='b2c' and '${elementName}'=='Add to Cart' and '${value}'=='false'    Element Should Not Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
+    ...    ELSE    Run Keyword if    '${env}' in ['b2c','mp_b2c'] and '${elementName}'=='Add to Cart' and '${value}'=='true'    Element Should Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
+    ...    ELSE    Run Keyword if    '${env}' in ['b2c','mp_b2c'] and '${elementName}'=='Add to Cart' and '${value}'=='false'    Element Should Not Be Visible    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
     ...    ELSE    Run Keyword If    '${elementName}'=='Color selector' and '${value}'=='true'    Page Should Contain Element   xpath=//product-item[@data-qa='component product-item'][1]//product-item-color-selector
     ...    ELSE    Run Keyword If    '${elementName}'=='Color selector' and '${value}'=='false'    Page Should Not Contain Element   xpath=//product-item[@data-qa='component product-item'][1]//product-item-color-selector
     ...    ELSE    Run Keyword If    '${elementName}'=='Sale label' and '${value}'=='true'    Page Should Contain Element   xpath=//product-item[@data-qa='component product-item'][1]//label-group//span[contains(text(),'SALE')]
@@ -77,7 +77,7 @@ Yves: select filter value:
 
 Yves: quick add to cart for first item in catalog
     Run Keyword If    '${env}'=='b2b'    Click    xpath=//product-item[@data-qa='component product-item'][1]//*[@class='product-item__actions']//ajax-add-to-cart//button
-    ...    ELSE    Run Keyword If    '${env}'=='b2c'    Click    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
+    ...    ELSE    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Click    xpath=//product-item[@data-qa='component product-item'][1]//ajax-add-to-cart//button
 
 Yves: get current cart item counter value
     [Documentation]    returns the cart item count number as an integer

@@ -171,18 +171,18 @@ Yves: get index of the first available product
     FOR    ${index}    IN RANGE    1    ${productsCount}+1
         ${status}=    Run Keyword And Ignore Error    
         ...    Run keyword if    '${env}'=='b2b'    Page should contain element    xpath=//product-item[@data-qa='component product-item'][${index}]//*[@class='product-item__actions']//ajax-add-to-cart//button[@disabled='']
-        ...    ELSE    Run keyword if    '${env}'=='b2c'    Page should contain element    xpath=//product-item[@data-qa='component product-item'][${index}]//ajax-add-to-cart//button
+        ...    ELSE    Run keyword if    '${env}' in ['b2c','mp_b2c']    Page should contain element    xpath=//product-item[@data-qa='component product-item'][${index}]//ajax-add-to-cart//button
         Log    ${index}
         ${pdp_url}=    Run keyword if    '${env}'=='b2b'    Get Element Attribute    xpath=//product-item[@data-qa='component product-item'][${index}]//a[@itemprop='url']    href
         Run keyword if    'PASS' in ${status} and '${env}'=='b2b'    Continue For Loop
-        Run keyword if    'bundle' in '${pdp_url}' and '${env}'=='b2c'    Continue For Loop
+        Run keyword if    'bundle' in '${pdp_url}' and '${env}' in ['b2c','mp_b2c']    Continue For Loop
         Run keyword if    'FAIL' in ${status} and '${env}'=='b2b'    Run Keywords
         ...    Return From Keyword    ${index}
         ...    AND    Exit For Loop
-        ${pdp_url}=    Run keyword if    '${env}'=='b2c'    Get Element Attribute    xpath=//product-item[@data-qa='component product-item'][${index}]//div[contains(@class,'product-item__image')]//a[contains(@class,'link-detail-page')]    href
-        Run keyword if    'FAIL' in ${status} and '${env}'=='b2c'    Continue For Loop
-        Run keyword if    'bundle' in '${pdp_url}' and '${env}'=='b2c'    Continue For Loop
-        Run keyword if    'PASS' in ${status} and '${env}'=='b2c'    Run Keywords
+        ${pdp_url}=    Run keyword if    '${env}' in ['b2c','mp_b2c']    Get Element Attribute    xpath=//product-item[@data-qa='component product-item'][${index}]//div[contains(@class,'product-item__image')]//a[contains(@class,'link-detail-page')]    href
+        Run keyword if    'FAIL' in ${status} and '${env}' in ['b2c','mp_b2c']    Continue For Loop
+        Run keyword if    'bundle' in '${pdp_url}' and '${env}' in ['b2c','mp_b2c']    Continue For Loop
+        Run keyword if    'PASS' in ${status} and '${env}' in ['b2c','mp_b2c']    Run Keywords
         ...    Return From Keyword    ${index}
         ...    AND    Exit For Loop
     END

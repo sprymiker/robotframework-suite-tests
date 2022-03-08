@@ -23,7 +23,8 @@ ${wishlistIcon}    ${wishlist_icon_header_navigation_widget}
 *** Keywords ***   
 Yves: perform search by:
     [Arguments]    ${searchTerm}
-    Run keyword if    '${env}'=='b2c'    Click    xpath=//div[@class='header__search-open js-suggest-search__show']
+    # Run keyword if    '${env}' in ['b2c','mp_b2c']    Click    xpath=//div[@class='header__search-open js-suggest-search__show']
+    Run keyword if    '${env}' in ['b2c','mp_b2c']  Click    xpath=//div[@class='header__search-open js-suggest-search__show']
     wait until element is visible    ${search_form_header_menu_item}
     Type Text    ${search_form_header_menu_item}    ${searchTerm}
     Keyboard Key    press    Enter

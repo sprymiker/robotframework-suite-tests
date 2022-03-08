@@ -18,7 +18,7 @@ Yves: go to user menu item in the left bar:
 Yves: create a new customer address in profile:
     [Documentation]
     [Arguments]    ${salutation}    ${firstName}    ${lastName}    ${street}    ${houseNumber}    ${postCode}    ${city}    ${country}    ${isDefaultShipping}=True     ${isDefaultBilling}=True       ${company}=    ${phone}=    ${additionalAddress}=
-    Run Keyword If    '${env}'=='b2c'    Yves: go to user menu item in header:    My Profile
+    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Yves: go to user menu item in header:    My Profile
     ...    ELSE    Run Keyword If    '${env}'=='b2b'    Yves: go to user menu item in header:    Profile
     Yves: go to user menu item in the left bar:    Addresses
     Wait Until Element Is Visible    ${customer_account_add_new_address_button}[${env}]
@@ -44,7 +44,7 @@ Yves: create a new customer address in profile:
 
 Yves: check that user has address exists/doesn't exist:
     [Arguments]    ${exists}    ${firstName}    ${lastName}    ${street}    ${houseNumber}    ${postCode}    ${city}    ${country}    ${isDefaultShipping}=True     ${isDefaultBilling}=True       ${company}=NUll    ${phone}=NUll    ${additionalAddress}=NUll
-    Run Keyword If    '${env}'=='b2c'    Yves: go to user menu item in header:    My Profile
+    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Yves: go to user menu item in header:    My Profile
     ...    ELSE    Run Keyword If    '${env}'=='b2b'    Yves: go to user menu item in header:    Profile
     Yves: go to user menu item in the left bar:    Addresses
     Run Keyword If    '${exists}'=='true'    Run keywords
@@ -58,10 +58,10 @@ Yves: check that user has address exists/doesn't exist:
 
 Yves: delete user address:
     [Arguments]    ${street}
-    Run Keyword If    '${env}'=='b2c'    Yves: go to user menu item in header:    My Profile
+    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Yves: go to user menu item in header:    My Profile
     ...    ELSE    Run Keyword If    '${env}'=='b2b'    Yves: go to user menu item in header:    Profile
     Yves: go to user menu item in the left bar:    Addresses
-    Run Keyword If    '${env}'=='b2c'    Click    xpath=//li[contains(text(),'${street}')]/ancestor::div[@class='box']//button[contains(text(),'Delete')]
+    Run Keyword if    '${env}' in ['b2c','mp_b2c']    Click    xpath=//li[contains(text(),'${street}')]/ancestor::div[@class='box']//button[contains(text(),'Delete')]
     ...    ELSE    Run Keyword If    '${env}'=='b2b'    Click    xpath=//li[contains(text(),'${street}')]/ancestor::div[@class='action-card']//button
             
     Element Should Be Visible    xpath=//flash-message//div[contains(text(),'Address deleted successfully')]   message="Flash message didn't appear"
