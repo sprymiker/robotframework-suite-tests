@@ -317,48 +317,48 @@ Resource    ../../resources/steps/zed_customer_steps.robot
 #     Yves: 'Order Details' page contains the following product title N times:    Smartstation Kit    3
 #     [Teardown]    Yves: check if cart is not empty and clear it
 
-Discounts
-    [Documentation]    Discounts, Promo Products, and Coupon Codes (includes guest checkout)
-    [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    ...    AND    Zed: deactivate following discounts from Overview page:    For every purchase above certain value depending on the currency and net/gross price. you get this promotional product for free    10% Discount for all orders above    €5 every tuesday and wednesday for buying 5 items    5% discount on all white products    10% discount on all products with an Intel Core processor    Free standard delivery
-    ...    AND    Zed: change product stock:    190    190_25111746    true    10
-    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    Zed: go to second navigation item level:    Merchandising    Discount
-    Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    test${random}    discountName=Voucher Code 5% ${random}
-    Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Cart Rule 10% ${random}
-    Zed: create a discount and activate it:    cart rule    Percentage    100    discountName=Promotional Product 100% ${random}    promotionalProductDiscount=True    promotionalProductAbstractSku=002    promotionalProductQuantity=2
-    Yves: login on Yves with provided credentials:    ${yves_user_email}
-    Yves: check if cart is not empty and clear it
-    Yves: go to PDP of the product with sku:    190
-    Yves: add product to the shopping cart
-    Yves: go to b2c shopping cart
-    Yves: apply discount voucher to cart:    test${random}
-    Yves: discount is applied:    voucher    Voucher Code 5% ${random}    - €8.73
-    Yves: discount is applied:    cart rule    Cart Rule 10% ${random}    - €17.46
-    Yves: promotional product offer is/not shown in cart:    true
-    Yves: change quantity of promotional product and add to cart:    +    1
-    Yves: shopping cart contains the following products:    Kodak EasyShare M532    Canon IXUS 160
-    # Yves: discount is applied:    cart rule    Promotional Product 100% ${random}    - €189.98
-    Yves: click on the 'Checkout' button in the shopping cart
-    Yves: billing address same as shipping address:    true
-    Yves: fill in the following new shipping address:
-    ...    || salutation | firstName                      | lastName                      | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
-    ...    || Mr.        | ${yves_second_user_first_name} | ${yves_second_user_last_name} | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
-    Yves: submit form on the checkout
-    Yves: select the following shipping method for the shipment:    1    DHL    Express
-    Yves: select the following shipping method for the shipment:    2    Hermes    Standard
-    Yves: submit form on the checkout
-    Yves: select the following payment method on the checkout and go next:    Invoice
-    Yves: accept the terms and conditions:    true
-    Yves: 'submit the order' on the summary page
-    Yves: 'Thank you' page is displayed
-    Yves: get the last placed order ID by current customer
-    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    Zed: grand total for the order equals:    ${lastPlacedOrder}    €848.54
-    [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
-    ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    ...    AND    Zed: deactivate following discounts from Overview page:    Voucher Code 5% ${random}    Cart Rule 10% ${random}    Promotional Product 100% ${random}
-    ...    AND    Zed: activate following discounts from Overview page:    For every purchase above certain value depending on the currency and net/gross price. you get this promotional product for free    10% Discount for all orders above    €5 every tuesday and wednesday for buying 5 items    5% discount on all white products    10% discount on all products with an Intel Core processor    Free standard delivery
+# Discounts
+#     [Documentation]    Discounts, Promo Products, and Coupon Codes (includes guest checkout)
+#     [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     ...    AND    Zed: deactivate following discounts from Overview page:    For every purchase above certain value depending on the currency and net/gross price. you get this promotional product for free    10% Discount for all orders above    €5 every tuesday and wednesday for buying 5 items    5% discount on all white products    10% discount on all products with an Intel Core processor    Free standard delivery
+#     ...    AND    Zed: change product stock:    190    190_25111746    true    10
+#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     Zed: go to second navigation item level:    Merchandising    Discount
+#     Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    test${random}    discountName=Voucher Code 5% ${random}
+#     Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Cart Rule 10% ${random}
+#     Zed: create a discount and activate it:    cart rule    Percentage    100    discountName=Promotional Product 100% ${random}    promotionalProductDiscount=True    promotionalProductAbstractSku=002    promotionalProductQuantity=2
+#     Yves: login on Yves with provided credentials:    ${yves_user_email}
+#     Yves: check if cart is not empty and clear it
+#     Yves: go to PDP of the product with sku:    190
+#     Yves: add product to the shopping cart
+#     Yves: go to b2c shopping cart
+#     Yves: apply discount voucher to cart:    test${random}
+#     Yves: discount is applied:    voucher    Voucher Code 5% ${random}    - €8.73
+#     Yves: discount is applied:    cart rule    Cart Rule 10% ${random}    - €17.46
+#     Yves: promotional product offer is/not shown in cart:    true
+#     Yves: change quantity of promotional product and add to cart:    +    1
+#     Yves: shopping cart contains the following products:    Kodak EasyShare M532    Canon IXUS 160
+#     Yves: discount is applied:    cart rule    Promotional Product 100% ${random}    - €189.98
+#     Yves: click on the 'Checkout' button in the shopping cart
+#     Yves: billing address same as shipping address:    true
+#     Yves: fill in the following new shipping address:
+#     ...    || salutation | firstName                      | lastName                      | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
+#     ...    || Mr.        | ${yves_second_user_first_name} | ${yves_second_user_last_name} | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
+#     Yves: submit form on the checkout
+#     Yves: select the following shipping method for the shipment:    1    DHL    Express
+#     Yves: select the following shipping method for the shipment:    2    Hermes    Standard
+#     Yves: submit form on the checkout
+#     Yves: select the following payment method on the checkout and go next:    Credit Card
+#     Yves: accept the terms and conditions:    true
+#     Yves: 'submit the order' on the summary page
+#     Yves: 'Thank you' page is displayed
+#     Yves: get the last placed order ID by current customer
+#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     Zed: grand total for the order equals:    ${lastPlacedOrder}    €848.54
+#     [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
+#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     ...    AND    Zed: deactivate following discounts from Overview page:    Voucher Code 5% ${random}    Cart Rule 10% ${random}    Promotional Product 100% ${random}
+#     ...    AND    Zed: activate following discounts from Overview page:    For every purchase above certain value depending on the currency and net/gross price. you get this promotional product for free    10% Discount for all orders above    €5 every tuesday and wednesday for buying 5 items    5% discount on all white products    10% discount on all products with an Intel Core processor    Free standard delivery
 
 # Split_Delivery
 #     [Documentation]    Checks split delivery in checkout
@@ -394,6 +394,9 @@ Discounts
 #     Yves: accept the terms and conditions:    true
 #     Yves: 'submit the order' on the summary page
 #     Yves: 'Thank you' page is displayed
+#     Yves: get the last placed order ID by current customer
+#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     Zed: order has the following number of shipments:    ${lastPlacedOrder}    3
 #     [Teardown]    Yves: check if cart is not empty and clear it
 
 # Agent_Assist
@@ -416,6 +419,7 @@ Discounts
 #     ...    AND    Zed: delete Zed user with the following email:    agent+${random}@spryker.com
 
 # Return_Management
+# #TODO: Needs update to match merchant flow
 #     [Documentation]    Checks that returns work and oms process is checked
 #     Yves: login on Yves with provided credentials:    ${yves_user_email}
 #     Yves: check if cart is not empty and clear it
@@ -505,56 +509,56 @@ Discounts
 #     Yves: shopping cart contains/doesn't contain the following elements:    true    ${upSellProducts}
 #     [Teardown]    Yves: check if cart is not empty and clear it
 
-# Guest_Checkout
-#     [Documentation]    Guest checkout with bundles, discounts and OMS
-#     [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     ...    AND    Zed: change product stock:    ${bundled_product_1_abstract_sku}    ${bundled_product_1_concrete_sku}    true    10
-#     ...    AND    Zed: change product stock:    ${bundled_product_2_abstract_sku}    ${bundled_product_2_concrete_sku}    true    10
-#     ...    AND    Zed: change product stock:    ${bundled_product_3_abstract_sku}    ${bundled_product_3_concrete_sku}    true    10
-#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     ...    AND    Zed: go to second navigation item level:    Merchandising    Discount
-#     ...    AND    Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    guestTest${random}    discountName=Guest Voucher Code 5% ${random}
-#     ...    AND    Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Guest Cart Rule 10% ${random}
-#     Yves: go to the 'Home' page
-#     Yves: go to PDP of the product with sku:    ${bundle_product_abstract_sku}
-#     Yves: PDP contains/doesn't contain:    true    ${bundleItemsSmall}    ${bundleItemsLarge}
-#     Yves: add product to the shopping cart
-#     Yves: go to URL:    en/configurable-bundle/configurator/template-selection
-#     Yves: 'Choose Bundle to configure' page is displayed
-#     Yves: choose bundle template to configure:    Smartstation Kit
-#     Yves: select product in the bundle slot:    Slot 5    Sony Cyber-shot DSC-W830
-#     Yves: select product in the bundle slot:    Slot 6    Sony NEX-VG30E
-#     Yves: go to 'Summary' step in the bundle configurator
-#     Yves: add products to the shopping cart in the bundle configurator
-#     Yves: go to PDP of the product with sku:    007
-#     Yves: add product to the shopping cart
-#     Yves: go to PDP of the product with sku:    008
-#     Yves: add product to the shopping cart
-#     Yves: go to b2c shopping cart
-#     Yves: apply discount voucher to cart:    guestTest${random}
-#     Yves: shopping cart contains the following products:    ${bundle_product_product_name}
-#     Yves: click on the 'Checkout' button in the shopping cart
-#     Yves: proceed with checkout as guest:    Mr    Guest    user    guest+${random}@user.com
-#     Yves: billing address same as shipping address:    true
-#     Yves: fill in the following new shipping address:
-#     ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
-#     ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
-#     Yves: submit form on the checkout
-#     Yves: select the following shipping method on the checkout and go next:    Express
-#     Yves: select the following payment method on the checkout and go next:    Invoice
-#     Yves: accept the terms and conditions:    true
-#     Yves: 'submit the order' on the summary page
-#     Yves: 'Thank you' page is displayed
-#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     Zed: get the last placed order ID of the customer by email:    guest+${random}@user.com
-#     Zed: trigger all matching states inside xxx order:    ${zedLastPlacedOrder}    Pay
-#     Zed: trigger all matching states inside this order:    Skip timeout
-#     Zed: trigger all matching states inside this order:    Ship
-#     Zed: trigger all matching states inside this order:    Stock update
-#     Zed: trigger all matching states inside this order:    Close
-#     [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
-#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     ...    AND    Zed: deactivate following discounts from Overview page:    Guest Voucher Code 5% ${random}    Guest Cart Rule 10% ${random}
+Guest_Checkout
+    [Documentation]    Guest checkout with bundles, discounts and OMS
+    [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    ...    AND    Zed: change product stock:    ${bundled_product_1_abstract_sku}    ${bundled_product_1_concrete_sku}    true    10
+    ...    AND    Zed: change product stock:    ${bundled_product_2_abstract_sku}    ${bundled_product_2_concrete_sku}    true    10
+    ...    AND    Zed: change product stock:    ${bundled_product_3_abstract_sku}    ${bundled_product_3_concrete_sku}    true    10
+    ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    ...    AND    Zed: go to second navigation item level:    Merchandising    Discount
+    ...    AND    Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    guestTest${random}    discountName=Guest Voucher Code 5% ${random}
+    ...    AND    Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Guest Cart Rule 10% ${random}
+    Yves: go to the 'Home' page
+    Yves: go to PDP of the product with sku:    ${bundle_product_abstract_sku}
+    Yves: PDP contains/doesn't contain:    true    ${bundleItemsSmall}    ${bundleItemsLarge}
+    Yves: add product to the shopping cart
+    Yves: go to URL:    en/configurable-bundle/configurator/template-selection
+    Yves: 'Choose Bundle to configure' page is displayed
+    Yves: choose bundle template to configure:    Smartstation Kit
+    Yves: select product in the bundle slot:    Slot 5    Sony Cyber-shot DSC-W830
+    Yves: select product in the bundle slot:    Slot 6    Sony NEX-VG30E
+    Yves: go to 'Summary' step in the bundle configurator
+    Yves: add products to the shopping cart in the bundle configurator
+    Yves: go to PDP of the product with sku:    007
+    Yves: add product to the shopping cart
+    Yves: go to PDP of the product with sku:    008
+    Yves: add product to the shopping cart
+    Yves: go to b2c shopping cart
+    Yves: apply discount voucher to cart:    guestTest${random}
+    Yves: shopping cart contains the following products:    ${bundle_product_product_name}
+    Yves: click on the 'Checkout' button in the shopping cart
+    Yves: proceed with checkout as guest:    Mr    Guest    user    guest+${random}@user.com
+    Yves: billing address same as shipping address:    true
+    Yves: fill in the following new shipping address:
+    ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
+    ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
+    Yves: submit form on the checkout
+    Yves: select the following shipping method on the checkout and go next:    Express
+    Yves: select the following payment method on the checkout and go next:    Invoice
+    Yves: accept the terms and conditions:    true
+    Yves: 'submit the order' on the summary page
+    Yves: 'Thank you' page is displayed
+    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    Zed: get the last placed order ID of the customer by email:    guest+${random}@user.com
+    Zed: trigger all matching states inside xxx order:    ${zedLastPlacedOrder}    Pay
+    Zed: trigger all matching states inside this order:    Skip timeout
+    Zed: trigger all matching states inside this order:    Ship
+    Zed: trigger all matching states inside this order:    Stock update
+    Zed: trigger all matching states inside this order:    Close
+    [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
+    ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    ...    AND    Zed: deactivate following discounts from Overview page:    Guest Voucher Code 5% ${random}    Guest Cart Rule 10% ${random}
 
 # Refunds
 #     [Documentation]    Checks that refund can be created for one item and the whole order

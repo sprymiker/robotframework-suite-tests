@@ -118,17 +118,26 @@ Yves: select the following shipping method for the shipment:
         Click    xpath=//form[@name='shipmentCollectionForm']/descendant::article[contains(@class,'grid')][${shipment}]//div[@data-qa='component shipment-sidebar']//*[contains(@class,'title')]/*[contains(text(),'${shippingProvider}')]/..//following-sibling::ul[1]//label[contains(.,'${shippingMethod}')]/span[contains(@class,'radio__box')]
 
 Yves: select the following payment method on the checkout and go next:
+    [Documentation]    Available payment methods: 'Invoice' and 'Creadit Card'
     [Arguments]    ${paymentMethod}
-    BuiltIn.Run Keyword If    '${env}'=='b2b'    Run keywords
+    Run Keyword If    '${env}'=='b2b' and '${paymentMethod}'=='Invoice'    Run keywords
     ...    Click    //form[@id='payment-form']//li[@class='checkout-list__item'][contains(.,'${paymentMethod}')]//span[contains(@class,'toggler-radio__box')]
     ...    AND    Click    ${submit_checkout_form_button}
-    ...    ELSE    Run keywords
+    ...    ELSE IF    '${env}' in ['b2c','mp_b2c'] and '${paymentMethod}'=='Invoice'    Run keywords
     ...    Click    //form[@name='paymentForm']//span[contains(@class,'toggler') and contains(text(),'${paymentMethod}')]/preceding-sibling::span[@class='toggler-radio__box']
-    ...    AND    Type Text    ${checkout_payment_invoice_date_of_birth_field}    11.11.1111    
+    ...    AND    Type Text    ${checkout_payment_invoice_date_of_birth_field}[${env}]    11.11.1991    
     ...    AND    Click    ${submit_checkout_form_button}
-        
+    ...    ELSE IF    '${env}' in ['b2c','mp_b2c'] and '${paymentMethod}'=='Credit Card'    Run keywords
+    ...    Click    //form[@name='paymentForm']//span[contains(@class,'toggler') and contains(text(),'${paymentMethod}')]/preceding-sibling::span[@class='toggler-radio__box']
+    ...    AND    Type Text    ${checkout_payment_cc_card_number_field}    4111111111111111
+    ...    AND    Type Text    ${checkout_payment_cc_name_on_card_field}    Test Payment
+    ...    AND    Select From List By Value    ${checkout_payment_cc_card_expires_month_dropdown}    12
+    ...    AND    Select From List By Value    ${checkout_payment_cc_card_expires_year_dropdown}    2025
+    ...    AND    Type Text    ${checkout_payment_cc_card_cvc_code_field}    123
+    ...    AND    Click    ${submit_checkout_form_button}
 
 Yves: '${checkoutAction}' on the summary page
+    [Documentation]    Supported actions: 'submit the order', 'send the request' and 'approve the cart'
     Run Keyword If    '${checkoutAction}' == 'submit the order'    Click    ${checkout_summary_submit_order_button}
     ...    ELSE IF    '${checkoutAction}' == 'send the request'    Click    ${checkout_summary_send_request_button}
     ...    ELSE IF    '${checkoutAction}' == 'approve the cart'    Click    ${checkout_summary_approve_request_button}
