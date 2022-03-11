@@ -35,6 +35,10 @@ Yves: add product to the shopping cart
     Click    ${pdp_add_to_cart_button}
     Yves: remove flash messages
 
+Yves: select merchant on PDP:
+    [Arguments]    ${merchantToSelect}
+    Click    //form[contains(@name,'addToCartForm')]/div[contains(@data-qa,'merchant-product')]//span[contains(@class,'name')][text()='${merchantToSelect}']/ancestor::div[contains(@data-qa,'merchant-product')]//span[contains(@data-qa,'component radio')]
+
 Yves: change quantity on PDP:
     [Arguments]    ${qtyToSet}
     Run Keyword If    '${env}'=='b2b'

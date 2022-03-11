@@ -3,7 +3,8 @@
 
     "env": {
         "host": "http://yves.de.spryker.local/",
-        "zed_url": "http://backoffice.de.spryker.local/"
+        "zed_url": "http://backoffice.de.spryker.local/",
+        "mp_url": "http://mp.de.spryker.local/security-merchant-portal-gui/login/"
     },
 
     "users": {    
@@ -18,7 +19,11 @@
         "yves_second_user_password": "change123",
 
         "zed_admin_email": "admin@spryker.com",
-        "zed_admin_password": "change123"
+        "zed_admin_password": "change123",
+
+        "merchant_admin_spryker": "harald@spryker.com",
+        "merchant_admin_video_king": "martha@video-king.nl",
+        "merchant_admin_sony_experts": "michele@sony-experts.com"
     },
         
     "products": {

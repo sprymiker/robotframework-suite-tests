@@ -8,6 +8,7 @@ Resource    ../../resources/common/common.robot
 Resource    ../../resources/steps/header_steps.robot
 Resource    ../../resources/common/common_yves.robot
 Resource    ../../resources/common/common_zed.robot
+Resource    ../../resources/common/common_mp.robot
 Resource    ../../resources/steps/pdp_steps.robot
 Resource    ../../resources/steps/shopping_lists_steps.robot
 Resource    ../../resources/steps/checkout_steps.robot
@@ -418,69 +419,82 @@ Resource    ../../resources/steps/zed_customer_steps.robot
 #     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
 #     ...    AND    Zed: delete Zed user with the following email:    agent+${random}@spryker.com
 
-# Return_Management
-# #TODO: Needs update to match merchant flow
-#     [Documentation]    Checks that returns work and oms process is checked
-#     Yves: login on Yves with provided credentials:    ${yves_user_email}
-#     Yves: check if cart is not empty and clear it
-#     Yves: go to PDP of the product with sku:    007
-#     Yves: add product to the shopping cart
-#     Yves: go to PDP of the product with sku:    008
-#     Yves: add product to the shopping cart
-#     Yves: go to PDP of the product with sku:    010
-#     Yves: add product to the shopping cart
-#     Yves: go to b2c shopping cart
-#     Yves: click on the 'Checkout' button in the shopping cart
-#     Yves: billing address same as shipping address:    true
-#     Yves: fill in the following new shipping address:
-#     ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
-#     ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
-#     Yves: submit form on the checkout
-#     Yves: select the following shipping method on the checkout and go next:    Express
-#     Yves: select the following payment method on the checkout and go next:    Invoice
-#     Yves: accept the terms and conditions:    true
-#     Yves: 'submit the order' on the summary page
-#     Yves: 'Thank you' page is displayed
-#     Yves: get the last placed order ID by current customer
-#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     Zed: trigger all matching states inside xxx order:    ${lastPlacedOrder}    Pay
-#     Zed: trigger all matching states inside this order:    Skip timeout
-#     Zed: trigger all matching states inside this order:    Ship
-#     Yves: login on Yves with provided credentials:    ${yves_user_email}
-#     Yves: go to user menu item in header:    Orders History
-#     Yves: 'Order History' page is displayed
-#     Yves: get the last placed order ID by current customer
-#     Yves: 'View Order/Reorder/Return' on the order history page:     Return    ${lastPlacedOrder}
-#     Yves: 'Create Return' page is displayed
-#     Yves: create return for the following products:    010_30692994
-#     Yves: 'Return Details' page is displayed
-#     Yves: check that 'Print Slip' contains the following products:    010_30692994
-#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     Zed: create a return for the following order and product in it:    ${lastPlacedOrder}    007_30691822
-#     Zed: create new Zed user with the following data:    returnagent+${random}@spryker.com    change123${random}    Agent    Assist    Root group    This user is an agent    en_US
-#     Yves: go to the 'Home' page
-#     Yves: logout on Yves as a customer
-#     Yves: go to URL:    agent/login
-#     Yves: login on Yves with provided credentials:    returnagent+${random}@spryker.com    change123${random}
-#     Yves: header contains/doesn't contain:    true    ${customerSearchWidget}
-#     Yves: perform search by customer:    ${yves_user_email}
-#     Yves: agent widget contains:    ${yves_user_email}
-#     Yves: As an Agent login under the customer:    ${yves_user_email}
-#     Yves: go to user menu item in header:    Orders History
-#     Yves: 'View Order/Reorder/Return' on the order history page:     Return    ${lastPlacedOrder}
-#     Yves: 'Create Return' page is displayed
-#     Yves: create return for the following products:    008_30692992
-#     Yves: 'Return Details' page is displayed
-#     Yves: check that 'Print Slip' contains the following products:    008_30692992
-#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     Zed: trigger all matching states inside xxx order:    ${lastPlacedOrder}    Execute return
-#     Yves: login on Yves with provided credentials:    ${yves_user_email}
-#     Yves: go to user menu item in header:    Orders History
-#     Yves: 'Order History' page is displayed
-#     Yves: 'Order History' page contains the following order with a status:    ${lastPlacedOrder}    Returned
-#     [Teardown]    Run Keywords    Yves: check if cart is not empty and clear it
-#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-#     ...    AND    Zed: delete Zed user with the following email:    returnagent+${random}@spryker.com
+Return_Management
+#TODO: Needs update to match merchant flow
+    [Documentation]    Checks that returns work and oms process is checked
+    # Yves: login on Yves with provided credentials:    ${yves_user_email}
+    # Yves: check if cart is not empty and clear it
+    # #Spryker merchant product
+    # Yves: go to PDP of the product with sku:    007
+    # Yves: add product to the shopping cart
+    # #Video King merchant product
+    # Yves: go to PDP of the product with sku:    201
+    # Yves: add product to the shopping cart
+    # #Sony Experts merchant offer
+    # Yves: go to PDP of the product with sku:    198
+    # Yves: select merchant on PDP:    Sony Experts
+    # Yves: add product to the shopping cart
+    # Yves: go to b2c shopping cart
+    # Yves: click on the 'Checkout' button in the shopping cart
+    # Yves: billing address same as shipping address:    true
+    # Yves: fill in the following new shipping address:
+    # ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
+    # ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
+    # Yves: submit form on the checkout
+    # Yves: select the following shipping method for the shipment:    1    Hermes    Next Day
+    # Yves: select the following shipping method for the shipment:    2    Hermes    Same Day
+    # Yves: select the following shipping method for the shipment:    3    DHL    Express
+    # Yves: submit form on the checkout
+    # Yves: select the following payment method on the checkout and go next:    Invoice
+    # Yves: accept the terms and conditions:    true
+    # Yves: 'submit the order' on the summary page
+    # Yves: 'Thank you' page is displayed
+    # Yves: get the last placed order ID by current customer
+    # Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    # Zed: trigger all matching states inside xxx order:    ${lastPlacedOrder}    Pay
+    MP: login on MP with provided credentials:    ${merchant_admin_spryker}
+    # MP: login on MP with provided credentials:    ${merchant_admin_video_king}
+    # MP: login on MP with provided credentials:    ${merchant_admin_sony_experts}
+    MP: go to first navigation item level:    Orders
+    Take Screenshot
+
+
+    # Zed: trigger all matching states inside this order:    Ship
+    # Yves: login on Yves with provided credentials:    ${yves_user_email}
+    # Yves: go to user menu item in header:    Orders History
+    # Yves: 'Order History' page is displayed
+    # Yves: get the last placed order ID by current customer
+    # Yves: 'View Order/Reorder/Return' on the order history page:     Return    ${lastPlacedOrder}
+    # Yves: 'Create Return' page is displayed
+    # Yves: create return for the following products:    010_30692994
+    # Yves: 'Return Details' page is displayed
+    # Yves: check that 'Print Slip' contains the following products:    010_30692994
+    # Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    # Zed: create a return for the following order and product in it:    ${lastPlacedOrder}    007_30691822
+    # Zed: create new Zed user with the following data:    returnagent+${random}@spryker.com    change123${random}    Agent    Assist    Root group    This user is an agent    en_US
+    # Yves: go to the 'Home' page
+    # Yves: logout on Yves as a customer
+    # Yves: go to URL:    agent/login
+    # Yves: login on Yves with provided credentials:    returnagent+${random}@spryker.com    change123${random}
+    # Yves: header contains/doesn't contain:    true    ${customerSearchWidget}
+    # Yves: perform search by customer:    ${yves_user_email}
+    # Yves: agent widget contains:    ${yves_user_email}
+    # Yves: As an Agent login under the customer:    ${yves_user_email}
+    # Yves: go to user menu item in header:    Orders History
+    # Yves: 'View Order/Reorder/Return' on the order history page:     Return    ${lastPlacedOrder}
+    # Yves: 'Create Return' page is displayed
+    # Yves: create return for the following products:    008_30692992
+    # Yves: 'Return Details' page is displayed
+    # Yves: check that 'Print Slip' contains the following products:    008_30692992
+    # Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    # Zed: trigger all matching states inside xxx order:    ${lastPlacedOrder}    Execute return
+    # Yves: login on Yves with provided credentials:    ${yves_user_email}
+    # Yves: go to user menu item in header:    Orders History
+    # Yves: 'Order History' page is displayed
+    # Yves: 'Order History' page contains the following order with a status:    ${lastPlacedOrder}    Returned
+    # [Teardown]    Run Keywords    Yves: check if cart is not empty and clear it
+    # ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+    # ...    AND    Zed: delete Zed user with the following email:    returnagent+${random}@spryker.com
 
 # Content_Management
 #     [Documentation]    Checks cms content can be edited in zed and that correct cms elements are present on homepage
@@ -509,56 +523,56 @@ Resource    ../../resources/steps/zed_customer_steps.robot
 #     Yves: shopping cart contains/doesn't contain the following elements:    true    ${upSellProducts}
 #     [Teardown]    Yves: check if cart is not empty and clear it
 
-Guest_Checkout
-    [Documentation]    Guest checkout with bundles, discounts and OMS
-    [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    ...    AND    Zed: change product stock:    ${bundled_product_1_abstract_sku}    ${bundled_product_1_concrete_sku}    true    10
-    ...    AND    Zed: change product stock:    ${bundled_product_2_abstract_sku}    ${bundled_product_2_concrete_sku}    true    10
-    ...    AND    Zed: change product stock:    ${bundled_product_3_abstract_sku}    ${bundled_product_3_concrete_sku}    true    10
-    ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    ...    AND    Zed: go to second navigation item level:    Merchandising    Discount
-    ...    AND    Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    guestTest${random}    discountName=Guest Voucher Code 5% ${random}
-    ...    AND    Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Guest Cart Rule 10% ${random}
-    Yves: go to the 'Home' page
-    Yves: go to PDP of the product with sku:    ${bundle_product_abstract_sku}
-    Yves: PDP contains/doesn't contain:    true    ${bundleItemsSmall}    ${bundleItemsLarge}
-    Yves: add product to the shopping cart
-    Yves: go to URL:    en/configurable-bundle/configurator/template-selection
-    Yves: 'Choose Bundle to configure' page is displayed
-    Yves: choose bundle template to configure:    Smartstation Kit
-    Yves: select product in the bundle slot:    Slot 5    Sony Cyber-shot DSC-W830
-    Yves: select product in the bundle slot:    Slot 6    Sony NEX-VG30E
-    Yves: go to 'Summary' step in the bundle configurator
-    Yves: add products to the shopping cart in the bundle configurator
-    Yves: go to PDP of the product with sku:    007
-    Yves: add product to the shopping cart
-    Yves: go to PDP of the product with sku:    008
-    Yves: add product to the shopping cart
-    Yves: go to b2c shopping cart
-    Yves: apply discount voucher to cart:    guestTest${random}
-    Yves: shopping cart contains the following products:    ${bundle_product_product_name}
-    Yves: click on the 'Checkout' button in the shopping cart
-    Yves: proceed with checkout as guest:    Mr    Guest    user    guest+${random}@user.com
-    Yves: billing address same as shipping address:    true
-    Yves: fill in the following new shipping address:
-    ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
-    ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
-    Yves: submit form on the checkout
-    Yves: select the following shipping method on the checkout and go next:    Express
-    Yves: select the following payment method on the checkout and go next:    Invoice
-    Yves: accept the terms and conditions:    true
-    Yves: 'submit the order' on the summary page
-    Yves: 'Thank you' page is displayed
-    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    Zed: get the last placed order ID of the customer by email:    guest+${random}@user.com
-    Zed: trigger all matching states inside xxx order:    ${zedLastPlacedOrder}    Pay
-    Zed: trigger all matching states inside this order:    Skip timeout
-    Zed: trigger all matching states inside this order:    Ship
-    Zed: trigger all matching states inside this order:    Stock update
-    Zed: trigger all matching states inside this order:    Close
-    [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
-    ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
-    ...    AND    Zed: deactivate following discounts from Overview page:    Guest Voucher Code 5% ${random}    Guest Cart Rule 10% ${random}
+# Guest_Checkout
+#     [Documentation]    Guest checkout with bundles, discounts and OMS
+#     [Setup]    Run keywords    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     ...    AND    Zed: change product stock:    ${bundled_product_1_abstract_sku}    ${bundled_product_1_concrete_sku}    true    10
+#     ...    AND    Zed: change product stock:    ${bundled_product_2_abstract_sku}    ${bundled_product_2_concrete_sku}    true    10
+#     ...    AND    Zed: change product stock:    ${bundled_product_3_abstract_sku}    ${bundled_product_3_concrete_sku}    true    10
+#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     ...    AND    Zed: go to second navigation item level:    Merchandising    Discount
+#     ...    AND    Zed: create a discount and activate it:    voucher    Percentage    5    sku = '*'    guestTest${random}    discountName=Guest Voucher Code 5% ${random}
+#     ...    AND    Zed: create a discount and activate it:    cart rule    Percentage    10    sku = '*'    discountName=Guest Cart Rule 10% ${random}
+#     Yves: go to the 'Home' page
+#     Yves: go to PDP of the product with sku:    ${bundle_product_abstract_sku}
+#     Yves: PDP contains/doesn't contain:    true    ${bundleItemsSmall}    ${bundleItemsLarge}
+#     Yves: add product to the shopping cart
+#     Yves: go to URL:    en/configurable-bundle/configurator/template-selection
+#     Yves: 'Choose Bundle to configure' page is displayed
+#     Yves: choose bundle template to configure:    Smartstation Kit
+#     Yves: select product in the bundle slot:    Slot 5    Sony Cyber-shot DSC-W830
+#     Yves: select product in the bundle slot:    Slot 6    Sony NEX-VG30E
+#     Yves: go to 'Summary' step in the bundle configurator
+#     Yves: add products to the shopping cart in the bundle configurator
+#     Yves: go to PDP of the product with sku:    007
+#     Yves: add product to the shopping cart
+#     Yves: go to PDP of the product with sku:    008
+#     Yves: add product to the shopping cart
+#     Yves: go to b2c shopping cart
+#     Yves: apply discount voucher to cart:    guestTest${random}
+#     Yves: shopping cart contains the following products:    ${bundle_product_product_name}
+#     Yves: click on the 'Checkout' button in the shopping cart
+#     Yves: proceed with checkout as guest:    Mr    Guest    user    guest+${random}@user.com
+#     Yves: billing address same as shipping address:    true
+#     Yves: fill in the following new shipping address:
+#     ...    || salutation | firstName | lastName | street        | houseNumber | postCode | city   | country | company | phone     | additionalAddress ||
+#     ...    || Mr.        | Guest     | User     | Kirncher Str. | 7           | 10247    | Berlin | Germany | Spryker | 123456789 | Additional street ||
+#     Yves: submit form on the checkout
+#     Yves: select the following shipping method on the checkout and go next:    Express
+#     Yves: select the following payment method on the checkout and go next:    Invoice
+#     Yves: accept the terms and conditions:    true
+#     Yves: 'submit the order' on the summary page
+#     Yves: 'Thank you' page is displayed
+#     Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     Zed: get the last placed order ID of the customer by email:    guest+${random}@user.com
+#     Zed: trigger all matching states inside xxx order:    ${zedLastPlacedOrder}    Pay
+#     Zed: trigger all matching states inside this order:    Skip timeout
+#     Zed: trigger all matching states inside this order:    Ship
+#     Zed: trigger all matching states inside this order:    Stock update
+#     Zed: trigger all matching states inside this order:    Close
+#     [Teardown]    Run keywords    Yves: check if cart is not empty and clear it
+#     ...    AND    Zed: login on Zed with provided credentials:    ${zed_admin_email}
+#     ...    AND    Zed: deactivate following discounts from Overview page:    Guest Voucher Code 5% ${random}    Guest Cart Rule 10% ${random}
 
 # Refunds
 #     [Documentation]    Checks that refund can be created for one item and the whole order
