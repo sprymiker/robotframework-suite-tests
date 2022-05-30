@@ -6,33 +6,36 @@ Library    OperatingSystem
 Library    Collections
 Library    BuiltIn
 Library    DateTime
-Library    ../../resources/libraries/common.py
 Library    Telnet
 Library    RequestsLibrary
-Resource                  ../pages/yves/yves_header_section.robot
-Resource                  ../pages/yves/yves_login_page.robot
+Library    DatabaseLibrary
+Library    ../../resources/libraries/common.py
+Resource    ../pages/yves/yves_header_section.robot
+Resource    ../pages/yves/yves_login_page.robot
+
+# robot -v env:b2c -v browser:firefox -d results tests/demo_ui.robot 
+# robot -v env:b2c -v browser:chromium -v headless:true -d results tests/demo_ui.robot
 
 *** Variables ***
 # *** SUITE VARIABLES ***
-${env}                 b2b
-${headless}            true
+${env}                 b2c
+${headless}            false
 ${browser}             chromium
 ${browser_timeout}     60 seconds
 ${email_domain}        @spryker.com
 ${default_password}    change123
 ${admin_email}         admin@spryker.com
 ${device}
-# ${fake_email}          test.spryker+${random}@gmail.com
+${host}                https://www.de.b2c.demo-spryker.com/
+${zed_url}             https://backoffice.de.b2c.demo-spryker.com/
+
+
+# ${device}    Desktop Safari
+# ${device}    iPhone 12 Pro
+# ${device}    iPad Pro 11 landscape
+
 
 *** Keywords ***
-Load Variables
-    [Arguments]    ${env}
-    &{vars}=   Define Environment Variables From Json File    ${env}
-    FOR    ${key}    ${value}    IN    &{vars}
-        Log    Key is '${key}' and value is '${value}'.
-        ${var_value}=   Get Variable Value  ${${key}}   ${value}
-        Set Global Variable    ${${key}}    ${var_value}
-    END
 
 Set Up Keyword Arguments
     [Arguments]    @{args}
@@ -48,8 +51,7 @@ SuiteSetup
     [documentation]  Basic steps before each suite
     Remove Files    ${OUTPUTDIR}/selenium-screenshot-*.png
     Remove Files    resources/libraries/__pycache__/*
-    Load Variables    ${env}
-    New Browser    ${browser}    headless=${headless}    args=['--ignore-certificate-errors']
+    New Browser    ${browser}    headless=${headless}    args=['--ignore-certificate-errors']    devtools=False
     Set Browser Timeout    ${browser_timeout}
     Create default Main Context
     New Page    ${host}
@@ -66,12 +68,9 @@ SuiteTeardown
     Close Browser    ALL
 
 TestSetup
-    # ${random}=    Generate Random String    5    [NUMBERS]
-    # Set Global Variable    ${random}
     Go To    ${host}
 
 TestTeardown
-    # Run Keyword If Test Failed    Pause Execution
     Delete All Cookies
 
 Create default Main Context
@@ -106,25 +105,25 @@ Select Random Option From List
 
 Click Element by xpath with JavaScript
     [Arguments]    ${xpath}
-    Evaluate Javascript     ${None}     document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()
+    Evaluate Javascript    ${None}    document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.click()
 
 Click Element by id with JavaScript
     [Arguments]    ${id}
-    Evaluate Javascript     ${None}    document.getElementById("${id}").click()
+    Evaluate Javascript    ${None}    document.getElementById("${id}").click()
 
 Remove element from HTML with JavaScript
     [Arguments]    ${xpath}
-    Evaluate Javascript     ${None}    var element=document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;element.parentNode.removeChild(element);
+    Evaluate Javascript    ${None}    var element=document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;element.parentNode.removeChild(element);
 
 Add/Edit element attribute with JavaScript:
     [Arguments]    ${xpath}    ${attribute}    ${attributeValue}
     Log    ${attribute}
     Log    ${attributeValue}
-    Evaluate Javascript     ${None}    (document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).setAttribute("${attribute}", "${attributeValue}");
+    Evaluate Javascript    ${None}    (document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue).setAttribute("${attribute}", "${attributeValue}");
 
 Remove element attribute with JavaScript:
     [Arguments]    ${xpath}    ${attribute}
-    Evaluate Javascript     ${None}    var element=document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;element.removeAttribute("${attribute}"");
+    Evaluate Javascript    ${None}    var element=document.evaluate("${xpath}", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;element.removeAttribute("${attribute}"");
 
 # Helper keywords for migration from Selenium Library to Browser Library
 Wait Until Element Is Visible
@@ -161,7 +160,7 @@ Wait Until Element Is Not Visible
 
 Page Should Contain Link
     [Arguments]    ${url}    ${message}=${EMPTY}
-    ${hrefs}=    Execute JavaScript    Array.from(document.querySelectorAll('a')).map(e => e.getAttribute('href'))
+    ${hrefs}=    Evaluate Javascript    ${None}    Array.from(document.querySelectorAll('a')).map(e => e.getAttribute('href'))
     Should Contain    ${hrefs}    ${url}
 
 Scroll Element Into View
@@ -261,13 +260,9 @@ Try reloading page until element is/not appear:
     [Arguments]    ${element}    ${shouldBeDisplayed}    ${tries}=20    ${timeout}=1s
     FOR    ${index}    IN RANGE    0    ${tries}
         ${elementAppears}=    Run Keyword And Return Status    Page Should Contain Element    ${element}
-        IF    '${shouldBeDisplayed}'=='true' and '${elementAppears}'=='False'
-            Run Keywords    Sleep    ${timeout}    AND    Reload
-        ELSE IF     '${shouldBeDisplayed}'=='false' and '${elementAppears}'=='True'
-            Run Keywords    Sleep    ${timeout}    AND    Reload
-        ELSE
-            Exit For Loop
-        END
+        Run Keyword If    '${shouldBeDisplayed}'=='true' and '${elementAppears}'=='False'    Run Keywords    Sleep    ${timeout}    AND    Reload
+        ...    ELSE    Run Keyword If    '${shouldBeDisplayed}'=='false' and '${elementAppears}'=='True'    Run Keywords    Sleep    ${timeout}    AND    Reload
+        ...    ELSE    Exit For Loop
     END
     IF    ('${shouldBeDisplayed}'=='true' and '${elementAppears}'=='False') or ('${shouldBeDisplayed}'=='false' and '${elementAppears}'=='True')
         Fail    'Timeout exceeded'
@@ -284,3 +279,26 @@ Select From List By Value When Element Is Visible
     Run keywords
         ...    Wait Until Element Is Visible    ${selector}
         ...    AND    Select From List By Value    ${selector}     ${value}
+
+Save the result of a SELECT DB query to a variable:
+    [Documentation]    This keyword saves any value which you receive from DB using SQL query ``${sql_query}`` to a test variable called ``${variable_name}``. 
+    ...
+    ...    It can be used to save a value returned by any query into a custom test variable.
+    ...    This variable, once created, can be used during the specific test where this keyword is used and can be re-used by the keywords that follow this keyword in the test. 
+    ...    It will not be visible to other tests.
+    ...    NOTE: Make sure that you expect only 1 value from DB, you can also check your query via external SQL tool.
+    ...
+    ...    *Examples:*
+    ...
+    ...    ``Save the result of a SELECT DB query to a variable:    select registration_key from spy_customer where customer_reference = '${user_reference_id}'    confirmation_key``
+    [Arguments]    ${sql_query}    ${variable_name}
+    Connect To Database    pymysql    ${default_db_name}    ${default_db_user}    ${default_db_password}    ${default_db_host}    ${default_db_port}
+    ${var_value} =    Query    ${sql_query}
+    Disconnect From Database
+    ${var_value}=    Convert To String    ${var_value}
+    ${var_value}=    Replace String    ${var_value}    '   ${EMPTY}
+    ${var_value}=    Replace String    ${var_value}    ,   ${EMPTY}
+    ${var_value}=    Replace String    ${var_value}    (   ${EMPTY}
+    ${var_value}=    Replace String    ${var_value}    )   ${EMPTY}
+    Set Test Variable    ${${variable_name}}    ${var_value}  
+    [Return]    ${variable_name}
