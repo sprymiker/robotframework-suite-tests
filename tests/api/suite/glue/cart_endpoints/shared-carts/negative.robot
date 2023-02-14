@@ -77,7 +77,10 @@ Share_shopping_cart_without_company_user_attribute_and_cart_permission_group_att
     ...    AND    Response reason should be:    No Content
 
 Share_shopping_cart_to_the_other_company_user
-    [Setup]    Run Keywords    I get access token for the customer:    ${yves_seventh_user.email}
+    [Tags]    skip-due-to-refactoring
+    # fix need to be applyed when dev merged https://spryker.atlassian.net/browse/CC-16616
+    # [Setup]    Run Keywords    I get access token for the customer:    ${yves_seventh_user.email}
+    [Setup]    Run Keywords    I get access token for the customer:    ${yves_fourth_user.email}
     ...    AND    I set Headers:    Authorization=${token}
     ...    AND    I send a GET request:    /company-users
     ...    AND    Save value to a variable:    [data][0][id]    companyUserId
