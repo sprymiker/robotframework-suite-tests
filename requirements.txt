@@ -1,0 +1,6 @@
+robotframework
+robotframework-requests
+robotframework-jsonlibrary
+robotframework-databaselibrary
+PyMySQL
+psycopg2-binary
